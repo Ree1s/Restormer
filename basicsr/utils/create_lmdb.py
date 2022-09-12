@@ -3,7 +3,9 @@ from os import path as osp
 
 from basicsr.utils import scandir
 from basicsr.utils.lmdb_util import make_lmdb_from_imgs
-
+import cv2
+import os
+import tqdm
 def prepare_keys(folder_path, suffix='png'):
     """Prepare image path list and keys for DIV2K dataset.
 
@@ -69,14 +71,14 @@ def create_lmdb_for_gopro():
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
 def create_lmdb_for_rain13k():
-    folder_path = './datasets/Rain13k/train/input'
-    lmdb_path = './datasets/Rain13k/train/input.lmdb'
+    folder_path = 'Deraining/Datasets/train/Rain13K/input'
+    lmdb_path = 'Deraining/Datasets/train/Rain13K/input.lmdb'
 
     img_path_list, keys = prepare_keys(folder_path, 'jpg')
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
 
-    folder_path = './datasets/Rain13k/train/target'
-    lmdb_path = './datasets/Rain13k/train/target.lmdb'
+    folder_path = 'Deraining/Datasets/train/Rain13K/target'
+    lmdb_path = 'Deraining/Datasets/train/Rain13K/target.lmdb'
 
     img_path_list, keys = prepare_keys(folder_path, 'jpg')
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
@@ -122,3 +124,5 @@ def create_lmdb_for_SIDD():
         cv2.imwrite(osp.join(folder_path, 'ValidationBlocksSrgb_{}.png'.format(i)), cv2.cvtColor(data[i,...], cv2.COLOR_RGB2BGR)) 
     img_path_list, keys = prepare_keys(folder_path, 'png')
     make_lmdb_from_imgs(folder_path, lmdb_path, img_path_list, keys)
+
+# create_lmdb_for_rain13k()

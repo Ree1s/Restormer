@@ -4,15 +4,16 @@ from torchvision.transforms.functional import normalize
 from basicsr.data.data_util import (paired_paths_from_folder,
                                     paired_DP_paths_from_folder,
                                     paired_paths_from_lmdb,
-                                    paired_paths_from_meta_info_file)
+                                    paired_paths_from_meta_info_file,
+                                    paths_from_lmdb)
 from basicsr.data.transforms import augment, paired_random_crop, paired_random_crop_DP, random_augmentation
-from basicsr.utils import FileClient, imfrombytes, img2tensor, padding, padding_DP, imfrombytesDP
+from basicsr.utils import FileClient, imfrombytes, img2tensor, padding, padding_DP, imfrombytesDP, scandir
 
 import random
 import numpy as np
 import torch
 import cv2
-
+import os.path as osp
 class Dataset_PairedImage(data.Dataset):
     """Paired image dataset for image restoration.
 
@@ -204,7 +205,7 @@ class Dataset_GaussianDenoising(data.Dataset):
         index = index % len(self.paths)
         # Load gt and lq images. Dimension order: HWC; channel order: BGR;
         # image range: [0, 1], float32.
-        gt_path = self.paths[index]['gt_path']
+        gt_path = self.paths[index]
         img_bytes = self.file_client.get(gt_path, 'gt')
 
         if self.in_ch == 3:
